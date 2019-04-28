@@ -1,9 +1,9 @@
 //
 //  ViewController.swift
-//  Basic
+//  ARPlanets
 //
-//  Created by Abu Sufian on 4/28/19.
-//  Copyright © 2019 Abu Sufian. All rights reserved.
+//  Created by Anoop tomar on 12/1/17.
+//  Copyright © 2017 Devtechie. All rights reserved.
 //
 
 import UIKit
@@ -11,8 +11,9 @@ import SceneKit
 import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
-
+    
     @IBOutlet var sceneView: ARSCNView!
+    var sunNode: SCNNode!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,31 +25,68 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.showsStatistics = true
         
         // Create a new scene
+        self.createPlanets()
         let scene = SCNScene()
-        
-        // Enable natural lighting
-        sceneView.automaticallyUpdatesLighting = true
-        
-        // Create Cube
-        let cube = SCNBox(width: 0.2, height: 0.2, length: 0.2, chamferRadius: 0)
-        
-        //create material
-        let material = SCNMaterial()
-        material.diffuse.contents = UIColor.red
-        
-        //Create SCNode
-        let node = SCNNode(geometry: cube)
-        node.geometry?.materials = [material]
-        node.position = SCNVector3Make(0, -0.1, -0.8)
-        
-        //add scnnode to scene
-        scene.rootNode.addChildNode(node)
-        
-        //set the scene to the view
-        sceneView.scene = scene
+        scene.rootNode.addChildNode(self.sunNode)
         
         // Set the scene to the view
-        //sceneView.scene = scene
+        self.sceneView.scene = scene
+        
+    }
+    
+    func createPlanets(){
+        var mercuryNode: SCNNode!
+        var venusNode: SCNNode!
+        var earthNode: SCNNode!
+        var marsNode: SCNNode!
+        var jupiterNode: SCNNode!
+        var saturnNode: SCNNode!
+        var uranusNode: SCNNode!
+        var neptuneNode: SCNNode!
+        var plutoNode: SCNNode!
+        
+        self.sunNode = SCNNode(geometry: SCNSphere(radius: 0.25))
+        mercuryNode = SCNNode(geometry: SCNSphere(radius: 0.02))
+        venusNode = SCNNode(geometry: SCNSphere(radius: 0.04))
+        earthNode = SCNNode(geometry: SCNSphere(radius: 0.03))
+        marsNode = SCNNode(geometry: SCNSphere(radius: 0.05))
+        jupiterNode = SCNNode(geometry: SCNSphere(radius: 0.15))
+        saturnNode = SCNNode(geometry: SCNSphere(radius: 0.12))
+        uranusNode = SCNNode(geometry: SCNSphere(radius: 0.09))
+        neptuneNode = SCNNode(geometry: SCNSphere(radius: 0.08))
+        plutoNode = SCNNode(geometry: SCNSphere(radius: 0.04))
+        
+        self.sunNode.position = SCNVector3Make(0, -0.1, -3)
+        mercuryNode.position = SCNVector3Make(0.4, 0, 0)
+        venusNode.position = SCNVector3Make(0.6, 0, 0)
+        earthNode.position = SCNVector3Make(0.8, 0, 0)
+        marsNode.position = SCNVector3Make(1.0, 0, 0)
+        jupiterNode.position = SCNVector3Make(1.4, 0, 0)
+        saturnNode.position = SCNVector3Make(1.68, 0, 0)
+        uranusNode.position = SCNVector3Make(1.95, 0, 0)
+        neptuneNode.position = SCNVector3Make(2.14, 0, 0)
+        plutoNode.position = SCNVector3Make(2.319, 0, 0)
+        
+        self.sunNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "sun")
+        mercuryNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "mercury")
+        venusNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "venus")
+        earthNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "earth")
+        marsNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "mars")
+        jupiterNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "jupiter")
+        saturnNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "saturn")
+        uranusNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "uranus")
+        neptuneNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "neptune")
+        plutoNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "pluto")
+
+        self.sunNode.addChildNode(mercuryNode)
+        self.sunNode.addChildNode(venusNode)
+        self.sunNode.addChildNode(earthNode)
+        self.sunNode.addChildNode(marsNode)
+        self.sunNode.addChildNode(jupiterNode)
+        self.sunNode.addChildNode(saturnNode)
+        self.sunNode.addChildNode(uranusNode)
+        self.sunNode.addChildNode(neptuneNode)
+        self.sunNode.addChildNode(plutoNode)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,7 +94,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
-
+        
         // Run the view's session
         sceneView.session.run(configuration)
     }
@@ -67,17 +105,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Pause the view's session
         sceneView.session.pause()
     }
-
-    // MARK: - ARSCNViewDelegate
-    
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
-    }
-*/
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
